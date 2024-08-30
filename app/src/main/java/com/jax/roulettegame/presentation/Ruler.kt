@@ -1,5 +1,8 @@
 package com.jax.roulettegame.presentation
 
+import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -17,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -32,11 +36,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jax.roulettegame.R
 import com.jax.roulettegame.utils.ValueList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-@Preview(showBackground = true)
 @Composable
-fun Ruler(){
+fun RunGame(
+    context: Context,
+    adController: AdController
+) {
+    var gameJob: Job
+    Box(modifier = Modifier.fillMaxSize()){
+        Torque()
+        DisposableEffect(Unit) {
+            gameJob = CoroutineScope(Dispatchers.Main).launch {
+                while (isActive) {
+                    runAdvert(context, adController)
+                    delay(FIVE_MINUTES)
+                }
+            }
+            onDispose {
+                gameJob.cancel()
+            }
+        }
+    }
+}
+const val FIVE_MINUTES = 5*60*1000L
+private fun runAdvert(
+    context: Context,
+    adController: AdController
+){
+    adController.rewardedAd?.let { rewardedAd ->
+        rewardedAd.show(context as Activity) { _ ->
+            Toast.makeText(context, "Adverts for using the app", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+
+@Composable
+private fun Torque(){
 
     var rotationValue by remember {
         mutableFloatStateOf(0f)
