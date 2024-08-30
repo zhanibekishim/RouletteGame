@@ -51,6 +51,7 @@ android {
 
 dependencies {
     implementation("com.google.android.gms:play-services-ads:23.3.0")
+    implementation("com.yandex.android:mobileads:5.8.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

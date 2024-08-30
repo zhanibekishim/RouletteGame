@@ -10,8 +10,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -31,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jax.roulettegame.R
@@ -51,7 +53,14 @@ fun RunGame(
 ) {
     var gameJob: Job
     Box(modifier = Modifier.fillMaxSize()){
-        Torque()
+        Column(modifier = Modifier.fillMaxSize()){
+            Torque()
+            Spacer(modifier = Modifier.height(10.dp))
+            AdMobBanner(id = R.string.banner_ad_mob)
+            Spacer(modifier = Modifier.height(10.dp))
+            YandexBanner(id = R.string.banner_yandex)
+        }
+
         DisposableEffect(Unit) {
             gameJob = CoroutineScope(Dispatchers.Main).launch {
                 while (isActive) {
@@ -103,7 +112,8 @@ private fun Torque(){
         }, label = ""
     )
     Column(modifier = Modifier
-        .fillMaxSize()
+        .fillMaxWidth()
+        .fillMaxHeight(0.80f)
         .background(Color.White))
     {
         Text(

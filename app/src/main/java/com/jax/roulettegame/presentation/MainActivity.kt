@@ -13,11 +13,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this)
         adController = AdController(context = this)
         setContent {
             RouletteGameTheme {
-                RunGame(context = this , adController = adController )
+                RunGame(context = this , adController = adController)
             }
         }
     }
